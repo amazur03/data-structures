@@ -10,7 +10,7 @@ private:
 
 public:
     DynamicArray();                             // Default constructor
-    DynamicArray(int capacity);                 // Constructor with initial capacity
+    DynamicArray(int capacity, int size);       // Constructor with initial capacity
     ~DynamicArray();                            // Destructor to release dynamically allocated memory
 
     int getSize() const;                        // Function to get the current size of the array

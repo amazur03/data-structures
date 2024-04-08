@@ -9,10 +9,13 @@ DynamicArray::DynamicArray() {
 }
 
 // Constructor with initial capacity
-DynamicArray::DynamicArray(int capacity) {
+DynamicArray::DynamicArray(int capacity, int size) {
     _capacity = capacity;               // Set capacity to the provided value
-    _size = 0;                          // Initially, the array is empty
+    _size = size;                          // Initially, the array is empty
     array = new int[_capacity];         // Allocate memory for the array
+    for(int i = 0; i <= size; i++){
+        array[i] = i;
+    }
 }
 
 // Destructor to release dynamically allocated memory
