@@ -4,7 +4,7 @@
 
 PriorityQueue::PriorityQueue(int capacity) {
     _capacity = capacity;
-    H = new int[capacity];
+    H = new std::pair<int, int>[capacity];
     _size = 0;
 }
 
@@ -25,7 +25,7 @@ int PriorityQueue::rightChild(int i) {
 }
 
 void PriorityQueue::heapifyUp(int i) {
-    while (i > 0 && H[parent(i)] < H[i]) {
+    while (i > 0 && H[parent(i)].first < H[i].first) {
         std::swap(H[parent(i)], H[i]);
         i = parent(i);
     }
@@ -34,11 +34,11 @@ void PriorityQueue::heapifyUp(int i) {
 void PriorityQueue::heapifyDown(int i) {
     int maxIndex = i;
     int l = leftChild(i);
-    if (l < _size && H[l] > H[maxIndex]) {
+    if (l < _size && H[l].first > H[maxIndex].first) {
         maxIndex = l;
     }
     int r = rightChild(i);
-    if (r < _size && H[r] > H[maxIndex]) {
+    if (r < _size && H[r].first > H[maxIndex].first) {
         maxIndex = r;
     }
     if (i != maxIndex) {
@@ -47,14 +47,14 @@ void PriorityQueue::heapifyDown(int i) {
     }
 }
 
-void PriorityQueue::insert(int p) {
+void PriorityQueue::insert(int priority, int data) {
     _size = _size + 1;
-    H[_size - 1] = p; // Poprawka: Indeksowanie od zera
+    H[_size - 1] = std::make_pair(priority, data); // Poprawka: Indeksowanie od zera
     heapifyUp(_size - 1); // Poprawka: Indeksowanie od zera
 }
 
-int PriorityQueue::extractMax() {
-    int result = H[0];
+std::pair<int, int> PriorityQueue::extractMax() {
+    std::pair<int, int> result = H[0];
     H[0] = H[_size - 1]; // Poprawka: Indeksowanie od zera
     _size = _size - 1;
     heapifyDown(0);
@@ -62,35 +62,44 @@ int PriorityQueue::extractMax() {
 }
 
 int PriorityQueue::findMax() {
-    return H[0];
+    return H[0].second;
 }
 
-void PriorityQueue::deleteElem(int i) {
-    H[i] = findMax() + 1;
-    heapifyUp(i);
-    extractMax();
-}
-
-void PriorityQueue::increaseKey(int i, int newPriority) {
-    if (newPriority < H[i]) {
-        return;
+void PriorityQueue::increaseKey(int data, int newPriority) {
+    for (int i = 0; i < _size; ++i) {
+        if (H[i].second == data) {
+            if (newPriority < H[i].first) {
+                return;
+            }
+            H[i].first = newPriority;
+            heapifyUp(i);
+            return;
+        }
     }
-    H[i] = newPriority;
-    heapifyUp(i);
 }
 
-void PriorityQueue::decreaseKey(int i, int newPriority) {
-    if (newPriority > H[i]) {
-        return;
+void PriorityQueue::decreaseKey(int data, int newPriority) {
+    for (int i = 0; i < _size; ++i) {
+        if (H[i].second == data) {
+            if (newPriority > H[i].first) {
+                return;
+            }
+            H[i].first = newPriority;
+            heapifyDown(i);
+            return;
+        }
     }
-    H[i] = newPriority;
-    heapifyDown(i);
+}
+
+
+int PriorityQueue::getSize(){
+    return _size;
 }
 
 void PriorityQueue::printQueue() {
     std::cout << "Priority Queue Elements: ";
     for (int i = 0; i < _size; ++i) {
-        std::cout << H[i] << " ";
+        std::cout << "(" << H[i].first << ", " << H[i].second << ") ";
     }
     std::cout << std::endl;
 }

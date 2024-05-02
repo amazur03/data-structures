@@ -1,38 +1,56 @@
 #include <iostream>
 #include "priority_queue.hpp"
+#include <vector>
+#include <chrono>
 
 int main() {
-    PriorityQueue priorityQueue(50);
-    
-    priorityQueue.insert(55); 
-    priorityQueue.insert(12); 
-    priorityQueue.insert(14); 
-    priorityQueue.insert(17); 
-    priorityQueue.insert(1); 
-    priorityQueue.insert(70); 
-    priorityQueue.insert(91); 
-    priorityQueue.insert(15); 
-    priorityQueue.insert(3); 
+    std::vector<int> sizes = {1000, 10000, 100000}; // Specify the sizes of the priority queues
 
-    std::cout << "Heap created" << std::endl;
-    priorityQueue.printQueue();
+    for (int size : sizes) {
+        PriorityQueue pq(size);
 
-    std::cout << "Node with maximum priority: " << priorityQueue.extractMax() << "\n";
-    std::cout << "After extraction" << std::endl;
-    priorityQueue.printQueue();
+        std::cout << "-----------------" << size << "-----------------" << std::endl;
 
-    std::cout << "Before increasing" << std::endl;
-    priorityQueue.printQueue();
-    priorityQueue.increaseKey(2, 100);
-    std::cout << "After increasing" << std::endl;
-    priorityQueue.printQueue();
+        // Measure time for inserting elements
+        auto start = std::chrono::steady_clock::now();
+        for (int i = 0; i < size; ++i) {
+            pq.insert(i, i); // Wstawiamy i jako zarówno dane jak i priorytet
+        }
+        auto end = std::chrono::steady_clock::now();
+        std::chrono::duration<double, std::nano> insertTime = end - start;
+        std::cout << "Dodanie " << size << " elementow zajelo " << insertTime.count() << " nanosekund" << std::endl;
 
-    std::cout << "Before deletion" << std::endl;
-    priorityQueue.printQueue();
-    priorityQueue.deleteElem(3);
-    std::cout << "After deletion" << std::endl;
-    priorityQueue.printQueue();
+        // Measure time for extracting maximum element
+        start = std::chrono::steady_clock::now();
+        pq.extractMax();
+        end = std::chrono::steady_clock::now();
+        std::chrono::duration<double, std::nano> extractMaxTime = end - start;
+        std::cout << "Usuniecie elementu o najwyzszym priorytecie zajelo " << extractMaxTime.count() << " nanosekund" << std::endl;
 
+        // Measure time for getting size of the priority queue
+        start = std::chrono::steady_clock::now();
+        pq.getSize();
+        end = std::chrono::steady_clock::now();
+        std::chrono::duration<double, std::nano> getSizeTime = end - start;
+        std::cout << "Zwrot rozmiaru zajal: " << getSizeTime.count() << " nanosekund" << std::endl;
+
+        // Measure time for modifying priority of an element
+        start = std::chrono::steady_clock::now();
+        pq.increaseKey(1, 9999999);
+        end = std::chrono::steady_clock::now();
+        std::chrono::duration<double, std::nano> modifyPriorityTime = end - start;
+        std::cout << "Modyfikacja priorytetu zajela: " << modifyPriorityTime.count() << " nanosekund" << std::endl;
+
+        // Measure time for finding maximum element
+        start = std::chrono::steady_clock::now();
+        pq.findMax();
+        end = std::chrono::steady_clock::now();
+        std::chrono::duration<double, std::nano> findMaxTime = end - start;
+        std::cout << "Podejrzenie elementu o najwyzszym priorytecie zajelo: " << findMaxTime.count() << " nanosekund" << std::endl;
+
+        std::cout << std::endl;
+
+    }
 
     return 0;
 }
