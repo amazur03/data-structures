@@ -49,13 +49,13 @@ void PriorityQueue::heapifyDown(int i) {
 
 void PriorityQueue::insert(int priority, int data) {
     _size = _size + 1;
-    H[_size - 1] = std::make_pair(priority, data); // Poprawka: Indeksowanie od zera
-    heapifyUp(_size - 1); // Poprawka: Indeksowanie od zera
+    H[_size - 1] = std::make_pair(priority, data);
+    heapifyUp(_size - 1);
 }
 
 std::pair<int, int> PriorityQueue::extractMax() {
     std::pair<int, int> result = H[0];
-    H[0] = H[_size - 1]; // Poprawka: Indeksowanie od zera
+    H[0] = H[_size - 1];
     _size = _size - 1;
     heapifyDown(0);
     return result;

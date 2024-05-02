@@ -23,9 +23,8 @@ public:
     void insert(int priority, int data); // Function to insert a new element in the priority queue
     std::pair<int, int> extractMax(); // Function to extract the element with maximum priority
     int findMax(); // Function to get value of the current maximum element
-    void deleteElem(int i); // Function to remove the element located at given index
-    void increaseKey(int i, int newPriority); // Function to increase priority of elem at index i to new priority newPriority
-    void decreaseKey(int i, int newPriority); // Function to decrease priority of elem at index i to new priority newPriority
+    void increaseKey(int i, int newPriority); // Function to increase priority of elem of value i to new priority newPriority
+    void decreaseKey(int i, int newPriority); // Function to decrease priority of elem of value i to new priority newPriority
     int getSize(); // Function to return size of the queue
     void printQueue(); // Function to print queue
 };
